@@ -11,6 +11,7 @@ use App\Models\User;
 
 class AuthController extends Controller
 {
+
     public function register(Request $request)
     {
         $datas = [];
@@ -86,6 +87,10 @@ class AuthController extends Controller
             $user = User::where('username', $request['username'])->firstOrFail();
 
             $token = $user->createToken('auth_token')->plainTextToken;
+
+            $user->remember_token = $token;
+
+            $user->save();
     
             $datas = [
                 'message' => 'Hi '.$user->name,
@@ -114,15 +119,26 @@ class AuthController extends Controller
     public function logout()
     {
         try {
-            auth()->user()->tokens()->delete();
+            $token = auth('sanctum')->check();
 
-            $datas = [
-                'message' => 'Berhasil log out',
-                'success' => true,
-            ];
+            if($token){
+                auth()->user()->tokens()->delete();
 
-            $response = response()->json($datas,200);
+                $datas = [
+                    'message' => 'Berhasil log out',
+                    'success' => true,
+                ];
+    
+                $response = response()->json($datas,200);
+            }
+            else {
+                $datas = [
+                    'message' => 'silahkan login terlebih dahulu!',
+                    'success' => false,
+                ];
 
+                $response = response()->json($datas, 401);
+            }
         } catch (\Throwable $th) {
             
             $datas = [
@@ -135,5 +151,47 @@ class AuthController extends Controller
         } 
 
         return $response;
+    }
+
+
+    public function profile()
+    {
+        try {
+
+            $token = auth('sanctum')->check();
+
+            if($token) {
+                $user = auth()->user();
+
+                $datas = [
+                    'message' => 'Berhasil',
+                    'success' => true,
+                    'data' => $user
+                ];
+                $response = response()->json($datas, 200);
+               
+            } else {
+                $datas = [
+                    'message' => 'silahkan login terlebih dahulu!',
+                    'success' => false,
+                ];
+
+                $response = response()->json($datas, 401);
+            }
+
+           
+
+        } catch (\Throwable $th) {
+            
+            $datas = [
+                'message'=> 'Terjadi Kesalahan Hubungi Administrator',
+                'data' => $th,
+                'success'=> false,
+            ];
+
+            $response = response()->json($datas, 500);
+        } 
+
+        return $response; 
     }
 }
