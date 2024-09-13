@@ -2,34 +2,15 @@
 
 namespace App\Http\Controllers\API;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Auth;
 use Validator;
 use App\Models\User;
+use App\Http\Controllers\API\MainController;
 
-class AuthController extends Controller
+class AuthController extends MainController
 {
-
-    private function sendResponse($result, $message, $code = 200)
-    {
-        $response = [
-            'data'    => $result,
-            'message' => $message,
-        ];
-
-        if($code == 200)
-        {
-            $response['success'] = true;
-        } else {
-            $response['success'] = false;
-        }
-       
-
-        return response()->json($response, $code);
-    }
-
     public function register(Request $request)
     {
         $datas = [];
