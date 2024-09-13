@@ -12,6 +12,24 @@ use App\Models\User;
 class AuthController extends Controller
 {
 
+    private function sendResponse($result, $message, $code = 200)
+    {
+        $response = [
+            'data'    => $result,
+            'message' => $message,
+        ];
+
+        if($code == 200)
+        {
+            $response['success'] = true;
+        } else {
+            $response['success'] = false;
+        }
+       
+
+        return response()->json($response, $code);
+    }
+
     public function register(Request $request)
     {
         $datas = [];
@@ -23,13 +41,12 @@ class AuthController extends Controller
         ]);
 
         if($validator->fails()){
-            $datas = [
-                'success' => false,
-                'message' => 'Terjadi Kesalahan!, Silahkan coba lagi!',
-                'data' => $validator->errors()
-            ];
 
-            return response()->json($datas, 402);       
+            return $this->sendResponse(
+                $validator->errors(), 
+                'Terjadi Kesalahan!, Silahkan coba lagi!', 
+                402 
+            );       
         }
 
         try {
@@ -43,26 +60,16 @@ class AuthController extends Controller
             $token = $user->createToken('auth_token')->plainTextToken;
 
             $datas = [
-                'message'=> 'Berhasil!',
                 'data' => $user,
                 'access_token' => $token, 
-                'success'=> true,
                 'token_type' => 'Bearer',
             ];
     
-            $response = response()
-                ->json($datas, 200);
+            $response = $this->sendResponse($datas, 'Berhasil', 200);
 
         } catch (\Throwable $th) {
-            
-            $datas = [
-                'message'=> 'Terjadi Kesalahan Hubungi Administrator',
-                'data' => $th,
-                'success'=> false,
-            ];
 
-            $response = response()
-            ->json($datas, 500);
+            $response = $this->sendResponse($th, 'Terjadi Kesalahan Hubungi Administrator', 500);
         }
 
         
@@ -74,13 +81,7 @@ class AuthController extends Controller
     {
         if (!Auth::attempt($request->only('username', 'password')))
         {
-            $datas = [
-                'message' => 'Username atau Password Salah',
-                'success' => false
-            ];
-
-            return response()
-                ->json($datas, 401);
+            return $this->sendResponse(null, 'Username atau Password Salah', 401 );
         }
 
         try {
@@ -93,23 +94,14 @@ class AuthController extends Controller
             $user->save();
     
             $datas = [
-                'message' => 'Hi '.$user->name,
                 'access_token' => $token,
-                'token_type' => 'Bearer',
-                'success' => true
+                'token_type' => 'Bearer'
             ];
     
-            $response = response()->json($datas,200);
+            $response = $this->sendResponse($datas, 'Hi '.$user->name, 200);
         } catch (\Throwable $th) {
-            
-            $datas = [
-                'message'=> 'Terjadi Kesalahan Hubungi Administrator',
-                'data' => $th,
-                'success'=> false,
-            ];
 
-            $response = response()
-            ->json($datas, 500);
+            $response = $this->sendResponse($th, 'Terjadi Kesalahan Hubungi Administrator', 500);
         } 
 
         return $response;
@@ -124,30 +116,15 @@ class AuthController extends Controller
             if($token){
                 auth()->user()->tokens()->delete();
 
-                $datas = [
-                    'message' => 'Berhasil log out',
-                    'success' => true,
-                ];
     
-                $response = response()->json($datas,200);
+                $response = $this->sendResponse(null, 'Berhasil Logout', 200);
             }
             else {
-                $datas = [
-                    'message' => 'silahkan login terlebih dahulu!',
-                    'success' => false,
-                ];
-
-                $response = response()->json($datas, 401);
+                $response = $this->sendResponse(null, 'Silahkan login terlebih dahulu', 401);
             }
         } catch (\Throwable $th) {
             
-            $datas = [
-                'message'=> 'Terjadi Kesalahan Hubungi Administrator',
-                'data' => $th,
-                'success'=> false,
-            ];
-
-            $response = response()->json($datas, 500);
+            $response = $this->sendResponse($th, 'Terjadi Kesalahan Hubungi Administrator', 500);
         } 
 
         return $response;
@@ -183,13 +160,7 @@ class AuthController extends Controller
 
         } catch (\Throwable $th) {
             
-            $datas = [
-                'message'=> 'Terjadi Kesalahan Hubungi Administrator',
-                'data' => $th,
-                'success'=> false,
-            ];
-
-            $response = response()->json($datas, 500);
+            $response = $this->sendResponse($th, 'Terjadi Kesalahan Hubungi Administrator', 500);
         } 
 
         return $response; 
