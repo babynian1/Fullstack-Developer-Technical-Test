@@ -41,7 +41,7 @@ class FilmController extends MainController
                 'image_thumbnail' => $request->image,
             ]);
 
-            $response = $this->sendResponse($film, 'Berhasil menambahkan film', 200);
+            $response = $this->sendResponse($film, 'Berhasil menambahkan film', 201);
 
         } catch (\Throwable $th) {
             $response = $this->sendResponse($th, 'Terjadi Kesalahan Hubungi Administrator', 500);
@@ -100,7 +100,7 @@ class FilmController extends MainController
         try {
             $film->delete();
 
-            $response = $this->sendResponse(null, 'Film berhasil dihapus.', 200);
+            $response = $this->sendResponse(null, 'Film berhasil dihapus.', 204);
 
         }  catch (\Throwable $th) {
             $response = $this->sendResponse($th, 'Terjadi Kesalahan Hubungi Administrator', 500);

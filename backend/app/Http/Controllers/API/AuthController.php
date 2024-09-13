@@ -46,7 +46,7 @@ class AuthController extends MainController
                 'token_type' => 'Bearer',
             ];
     
-            $response = $this->sendResponse($datas, 'Berhasil', 200);
+            $response = $this->sendResponse($datas, 'Berhasil', 201);
 
         } catch (\Throwable $th) {
 
