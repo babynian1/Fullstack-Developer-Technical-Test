@@ -1,26 +1,30 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <Spinner v-if="showLoading"></Spinner>
+  <NavbarHead />
+  <router-view></router-view>
+  
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import NavbarHead from '@/components/Navbar.vue';
+import { mapState, mapGetters } from 'vuex';
+import Spinner from '@/components/Spinner.vue';
+import { IS_AUTH } from '@/store/storeconstant';
+
 
 export default {
   name: 'App',
+  computed: {
+      ...mapGetters('auth', {
+          auth : IS_AUTH,
+      }),
+      ...mapState({
+      showLoading: state => state.showLoading
+    })
+  },
   components: {
-    HelloWorld
-  }
+    NavbarHead,
+    Spinner
+  },
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>

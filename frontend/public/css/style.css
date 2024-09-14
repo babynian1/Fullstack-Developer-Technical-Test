@@ -1,0 +1,130 @@
+* {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+#app {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #01449C;
+  background-size: cover;
+}
+
+main {
+  padding-top: 40px;
+  padding-bottom: 50px;
+  height: auto;
+}
+
+.custom-navbar {
+  align-self: center;
+  background-color: #002e64;
+  font-family: 'Arial', sans-serif;
+  width: 1204px;
+  height: 72px;
+  position: fixed;
+  top: 24px;
+  margin-left: 5%;
+  margin-right: 5%;
+  left: 0;
+  right: 0;
+  padding: 16px 48px 16px 48px;
+  border-radius: 8px 8px 8px 8px;
+  border: 1px 0px 0px 0px;
+  justify: space-between;
+  opacity: 0px;
+  z-index: 99;
+}
+
+.navbar-brand {
+  color: #ffc107 !important;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+
+.nav-link {
+  color: #ffc107 !important;
+  font-size: 1rem;
+}
+
+.nav-link:hover {
+  color: #fff;
+}
+
+.dropdown-menu {
+  background-color: #002e64;
+}
+
+.dropdown-item {
+  color: #fff;
+}
+
+.dropdown-item:hover {
+  background-color: #ffc107;
+  color: #002e64;
+}
+
+.btn {
+  color: #111111;
+  background-color: #ffc107 !important;
+  border-radius: 100px !important;
+}
+
+.btn:hover {
+  color: #111111;
+  background-color: #d99d06;
+}
+
+@media (max-width: 768px ) {
+  .custom-navbar {
+    width: 100%;
+    position: absolute !important;
+    height: auto;
+    margin: 0;
+    top: 0px;
+    padding-top: 20px !important;
+  }
+
+  .navbar-brand {
+    font-size: 1.2rem;
+    color: #ffc107 !important;
+    font-weight: bold;
+  }
+
+  .sign-up-btn {
+    text-align: center;
+  }
+
+  main {
+    padding-top: 0px;
+    height: auto;
+  }
+}
+
+@media (max-width: 820px ) {
+  .custom-navbar {
+    width: 100%;
+    position: absolute !important;
+    height: auto;
+    margin: 0;
+    top: 0px;
+    padding-top: 20px !important;
+  }
+
+  .navbar-brand {
+    font-size: 1.2rem;
+    color: #ffc107 !important;
+    font-weight: bold;
+  }
+
+  .sign-up-btn {
+    text-align: center;
+  }
+
+  main {
+    padding-top: 0px;
+    height: auto;
+  }
+}

@@ -75,6 +75,7 @@ class AuthController extends MainController
             $user->save();
     
             $datas = [
+                'user' => $user, 
                 'access_token' => $token,
                 'token_type' => 'Bearer'
             ];
